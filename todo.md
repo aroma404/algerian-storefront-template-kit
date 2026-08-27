@@ -25,4 +25,4 @@
 - [x] Create a single core Registry Pattern entry point for navigation, plugins, template contracts, route definitions, and commerce services.
 - [x] Refactor all client and server imports to use the core registry facade rather than scattered module paths.
 - [x] Keep ui isolated to rendering and state presentation, with no direct infrastructure or template-registry imports.
-- [ ] Update tests, documentation, archive, and the two private GitHub repositories for the internal-only architecture.
+- [x] Update tests, documentation, archive, and the two private GitHub repositories for the internal-only architecture.
