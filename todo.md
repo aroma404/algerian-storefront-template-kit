@@ -19,7 +19,7 @@
 - [x] Rebuild and verify the single-folder template archive after the structural separation.
 - [x] Create and push a private GitHub repository containing the standalone skill and compressed template archive.
 - [x] Create and push a separate private GitHub repository containing the uncompressed template source folder.
-- [ ] Deliver the reusable skill attachment and an invocation prompt after the repositories are verified.
+- [x] Deliver the reusable skill attachment and an invocation prompt after the repositories are verified.
 - [x] Remove MySQL, Drizzle, and all external database configuration from the standalone template kit.
 - [x] Implement an internal persisted store with atomic inventory and order operations, without external services.
 - [x] Create a single core Registry Pattern entry point for navigation, plugins, template contracts, route definitions, and commerce services.
