@@ -1,8 +1,6 @@
 import React, { useState, type ReactNode } from "react";
 import { Link } from "wouter";
-import { dzd } from "../../client/src/core/money";
-import type { Product } from "../../client/src/core/types";
-import type { OwnedTemplateContract, TemplateExperience, TemplateRuntimeProps } from "../../client/src/core/templates/types";
+import { dzd, type OwnedTemplateContract, type Product, type TemplateExperience, type TemplateRuntimeProps } from "../../client/src/core/registry";
 import "./runtime.css";
 
 const spec = {"id":"quiet-form","family":"ritual","navigation":"minimal","card":"material","home":"atelier","catalog":"gallery","product":"story","cart":"bag","checkout":"studio","links":[["Edit","/catalog"],["Story","/tracking"],["Bag","/cart"]],"lead":"Quiet","action":"Add quietly","suffix":"quiet form"} as { id: string; family: string; navigation: string; card: string; home: string; catalog: string; product: string; cart: string; checkout: string; links: readonly (readonly [string, string])[]; lead: string; action: string; suffix: string };

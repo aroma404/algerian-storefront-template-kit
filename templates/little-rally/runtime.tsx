@@ -1,8 +1,6 @@
 import React, { useState, type ReactNode } from "react";
 import { Link } from "wouter";
-import { dzd } from "../../client/src/core/money";
-import type { Product } from "../../client/src/core/types";
-import type { OwnedTemplateContract, TemplateExperience, TemplateRuntimeProps } from "../../client/src/core/templates/types";
+import { dzd, type OwnedTemplateContract, type Product, type TemplateExperience, type TemplateRuntimeProps } from "../../client/src/core/registry";
 import "./runtime.css";
 
 const spec = {"id":"little-rally","family":"play","navigation":"activity","card":"performance","home":"launch","catalog":"technical","product":"spec","cart":"kit","checkout":"express","links":[["Rally","/catalog"],["Field kit","/catalog?kit=1"],["Route","/tracking"],["Kit","/cart"]],"lead":"Rally","action":"Add to field kit","suffix":"little rally"} as { id: string; family: string; navigation: string; card: string; home: string; catalog: string; product: string; cart: string; checkout: string; links: readonly (readonly [string, string])[]; lead: string; action: string; suffix: string };

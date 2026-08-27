@@ -1,27 +1,32 @@
 # Algerian Storefront Template Kit
 
-This directory is one independent storefront project. It contains the React customer interface, Express commerce server, MySQL migration, template runtimes, product source data and tests. There is no Builder, tenant configuration, hosted-platform dependency, or second backend service.
+This is one self-contained storefront directory. It contains the React storefront, one Express server, an internal durable JSON store, independently owned templates, and tests. It has no Builder, tenant runtime, MySQL, Drizzle, external database, separate API service, or separately deployed frontend.
 
 ## Run one server
 
-Copy `.env.example` to `.env` and set `DATABASE_URL` for persistent MySQL data. Then run `pnpm install --frozen-lockfile`, `pnpm db:migrate`, and `pnpm dev`. The single Express process runs the client and internal commerce routes together through the `PORT` value; it defaults to `3000`.
+Copy `.env.example` to `.env`, then run `pnpm install --frozen-lockfile` and `pnpm dev`. The same Express process serves the React application and internal commerce routes on `PORT`, defaulting to `3000`. Run `pnpm build && pnpm start` for production.
 
-For production, run `pnpm build` then `pnpm start`. The same Express process serves `dist/client` and the commerce routes. No proxy, separate frontend server, or separate API deployment is required.
+The internal data file defaults to `data/store-state.json`; change `STORE_DATA_FILE` only when you need another local or mounted path. Back up this file before server migration or deployment. Do not edit it while the server is running.
 
-| Location | Purpose |
+| Location | Responsibility |
 |---|---|
-| `client/` | React storefront and editable store source modules |
-| `server/` | One Express server, catalogue, checkout, inventory and order-tracking logic |
-| `drizzle/` | MySQL schema migration script |
-| `templates/` | The independently owned JSX and responsive CSS for 24 templates |
-| `scripts/` | One-off maintenance scripts; not required at runtime |
+| `client/src/core/` | One Registry facade, domain types, plugin registry, navigation routes, DZD helper, internal HTTP client and template loader. |
+| `client/src/ui/` | React application shell, presentation state, styles and routing only. |
+| `client/src/store/` | Directly editable store identity, catalogue, operational rules and chosen template. |
+| `templates/` | Twenty-four separately owned template runtimes and responsive CSS files. |
+| `server/` | One Express process plus the internal atomic JSON inventory/order store. |
+| `data/` | Runtime JSON state created internally; excluded from source control. |
 
-## Configure a store
+## Configure a new store
 
-Edit the TypeScript files in `client/src/store/`: `identity.ts`, `business.ts`, `catalog.ts`, `operations.ts`, and `template.ts`. These are direct source modules, not a runtime configuration service. Select one template in `template.ts`; the matching template runtime is loaded on demand. Products may have one to twelve ordered images, but the cover `image` should match the first item in `images`.
+Edit the source modules in `client/src/store/`: `identity.ts`, `business.ts`, `catalog.ts`, `operations.ts`, and `template.ts`. Product `image` must match the first entry of ordered `images`, which can contain one to twelve HTTPS image URLs. `template.id` must match an owned directory in `templates/` and a loader exposed through `client/src/core/registry.ts`.
 
-The internal routes stay within the same server: `GET /api/catalog`, `GET /api/catalog/:slug`, `POST /api/orders`, `GET /api/orders/:reference?phone=`, and `GET /api/health`. The server calculates totals from stored product prices and reserves tracked inventory in the same database transaction. It never accepts customer-provided prices or totals.
+Use `coreRegistry` as the only import entry point for shared store data, plugins, navigation, commerce client, money formatting and template contracts. Keep `ui/` free from direct file-level infrastructure imports. Keep the template runtime and `runtime.css` visually owned by its own template directory.
+
+## Internal commerce routes
+
+`GET /api/health`, `GET /api/catalog`, `GET /api/catalog/:slug`, `POST /api/orders`, and `GET /api/orders/:reference?phone=` are routes inside the same Express process. The server calculates totals from the internal catalogue and serializes order writes, inventory reservation, and atomic JSON file replacement. The browser never determines prices, totals, stock, or order status.
 
 ## Verify
 
-Run `pnpm test`, `pnpm check`, and `pnpm build`. With no `DATABASE_URL`, the project states `memory` mode in `/api/health`; this is only for local development and data is intentionally lost on restart. Configure MySQL before accepting real orders.
+Run `pnpm test`, `pnpm check`, and `pnpm build`. Test the selected template on desktop, tablet and mobile, including the collapsed navigation, gallery, cart quantity, checkout errors, successful order creation, and protected tracking. See `SYSTEM-ARCHITECTURE.ar.md` for the detailed Arabic architecture guide.

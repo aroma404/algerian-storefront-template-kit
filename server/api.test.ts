@@ -1,12 +1,16 @@
 import type { Server } from "node:http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import os from "node:os";
+import path from "node:path";
 
 let server: Server;
 let baseUrl = "";
 
 describe("storefront API", () => {
   beforeAll(async () => {
-    delete process.env.DATABASE_URL;
+    process.env.STORE_DATA_FILE = path.join(os.tmpdir(), "template-kit-api-test.json");
+    const { serverRegistry } = await import("./registry");
+    await serverRegistry.commerce.reset();
     const { createStorefrontApp } = await import("./index");
     server = createStorefrontApp().listen(0);
     await new Promise<void>(resolve => server.once("listening", resolve));
@@ -14,11 +18,11 @@ describe("storefront API", () => {
     if (!address || typeof address === "string") throw new Error("Test server unavailable");
     baseUrl = `http://127.0.0.1:${address.port}`;
   });
-  afterAll(async () => { await new Promise<void>(resolve => server.close(() => resolve())); });
+  afterAll(async () => { await new Promise<void>(resolve => server.close(() => resolve())); const { serverRegistry } = await import("./registry"); await serverRegistry.commerce.reset(); delete process.env.STORE_DATA_FILE; });
 
   it("serves catalog data, calculates a real checkout server-side, and protects tracking", async () => {
     const health = await fetch(`${baseUrl}/api/health`);
-    expect(await health.json()).toMatchObject({ status: "ok", persistence: "memory" });
+    expect(await health.json()).toMatchObject({ status: "ok", persistence: "internal" });
     const catalog = await fetch(`${baseUrl}/api/catalog`);
     const products = await catalog.json() as Array<{ id: string; slug: string }>;
     expect(products[0]?.slug).toBeTruthy();

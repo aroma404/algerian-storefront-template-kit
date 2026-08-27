@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "architecture": "internal-single-server",
+  "entryPoints": {
+    "ui": "client/src/ui/App.tsx",
+    "server": "server/index.ts",
+    "templateRegistry": "client/src/core/templates/registry.ts"
+  },
+  "modules": {
+    "store": "client/src/store",
+    "plugins": "client/src/core/plugins",
+    "navigation": "client/src/core/registry.ts",
+    "commerce": "server/internalStore.ts",
+    "templates": "templates"
+  },
+  "routes": ["/", "/catalog", "/search", "/product/:slug", "/cart", "/checkout", "/tracking", "/success"]
+}

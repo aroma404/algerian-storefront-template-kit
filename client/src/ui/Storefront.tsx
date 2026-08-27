@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState, type ComponentType } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Route, Switch, useLocation } from "wouter";
-import type { ClientPlugin, Product, StoreConfig, StorePage, TemplateDefinition } from "../core/types";
-import type { CartItem, DeviceViewport, OwnedTemplateContract, TemplateCompositionProps, TemplateRuntimeProps } from "../core/templates/types";
-import { storefrontApi, type OrderInput } from "../core/api";
+import { coreRegistry, type CartItem, type DeviceViewport, type OrderInput, type OwnedTemplateContract, type Product, type StorePage, type TemplateRuntimeProps } from "../core/registry";
 
-export function Storefront({ config, template, contract, plugins, preview = false, device = "desktop", TemplateComposition }: { config: StoreConfig; template: TemplateDefinition; contract: OwnedTemplateContract; plugins: ClientPlugin[]; preview?: boolean; device?: DeviceViewport; TemplateComposition?: ComponentType<TemplateCompositionProps> }) {
+export function Storefront({ contract, preview = false, device = "desktop" }: { contract: OwnedTemplateContract; preview?: boolean; device?: DeviceViewport }) {
+  const { store: config, template, plugins } = coreRegistry;
   const [cart, setCart] = useState<CartItem[]>([]);
   const [catalog, setCatalog] = useState<Product[]>(config.catalog);
   const [query, setQuery] = useState("");
   const [location, navigate] = useLocation();
-  useEffect(() => { const controller = new AbortController(); void storefrontApi.catalog().then(products => { if (!controller.signal.aborted && products.length) setCatalog(products); }).catch(() => undefined); return () => controller.abort(); }, []);
+  useEffect(() => { const controller = new AbortController(); void coreRegistry.commerce.api.catalog().then(products => { if (!controller.signal.aborted && products.length) setCatalog(products); }).catch(() => undefined); return () => controller.abort(); }, []);
   const liveConfig = useMemo(() => ({ ...config, catalog }), [catalog, config]);
   const filtered = useMemo(() => catalog.filter(product => `${product.name} ${product.category} ${product.tags.join(" ")}`.toLowerCase().includes(query.toLowerCase())), [catalog, query]);
   const add = (product: Product, option = product.options[0]?.values[0] ?? "Standard") => setCart(previous => {
@@ -20,10 +19,10 @@ export function Storefront({ config, template, contract, plugins, preview = fals
   const total = cart.reduce((sum, item) => sum + item.product.priceDzd * item.quantity, 0);
   const featured = catalog[0] ?? config.catalog[0]!;
   const currentProduct = catalog.find(item => item.slug === location.split("/").pop()) ?? featured;
-  const has = (id: string) => plugins.some(plugin => plugin.id === id);
+  const has = coreRegistry.plugins.has;
   const Runtime = contract.Runtime;
-  const placeOrder = async (details: Omit<OrderInput, "items">) => storefrontApi.order({ ...details, items: cart.map(item => ({ productId: item.product.id, quantity: item.quantity, option: item.option })) });
-  const createRuntimeProps = (page: StorePage): TemplateRuntimeProps => ({ page, config: liveConfig, template, plugins, device, cart, filtered, query, setQuery, currentProduct, featured, total, add, changeQuantity, placeOrder, navigate, has, TemplateComposition });
+  const placeOrder = async (details: Omit<OrderInput, "items">) => coreRegistry.commerce.api.order({ ...details, items: cart.map(item => ({ productId: item.product.id, quantity: item.quantity, option: item.option })) });
+  const createRuntimeProps = (page: StorePage): TemplateRuntimeProps => ({ page, config: liveConfig, template, plugins: plugins.all, device, cart, filtered, query, setQuery, currentProduct, featured, total, add, changeQuantity, placeOrder, navigate, has });
   const render = (page: StorePage) => () => <Runtime {...createRuntimeProps(page)} />;
 
   return <div className={`store template-${template.id} device-${device}`} data-owned-template={contract.marker} data-device-contract={contract.devices[device]}>

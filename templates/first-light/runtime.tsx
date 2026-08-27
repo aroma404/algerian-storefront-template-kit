@@ -1,8 +1,6 @@
 import React, { useState, type ReactNode } from "react";
 import { Link } from "wouter";
-import { dzd } from "../../client/src/core/money";
-import type { Product } from "../../client/src/core/types";
-import type { OwnedTemplateContract, TemplateExperience, TemplateRuntimeProps } from "../../client/src/core/templates/types";
+import { dzd, type OwnedTemplateContract, type Product, type TemplateExperience, type TemplateRuntimeProps } from "../../client/src/core/registry";
 import "./runtime.css";
 
 const spec = {"id":"first-light","family":"drop","navigation":"drop","card":"release","home":"launch","catalog":"drop","product":"quick","cart":"bag","checkout":"express","links":[["New drop","/catalog"],["Edition 01","/catalog?edition=1"],["Release notes","/tracking"],["Bag","/cart"]],"lead":"Drop","action":"Claim release","suffix":"first light"} as { id: string; family: string; navigation: string; card: string; home: string; catalog: string; product: string; cart: string; checkout: string; links: readonly (readonly [string, string])[]; lead: string; action: string; suffix: string };

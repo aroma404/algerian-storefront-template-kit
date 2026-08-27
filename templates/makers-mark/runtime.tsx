@@ -1,8 +1,6 @@
 import React, { useState, type ReactNode } from "react";
 import { Link } from "wouter";
-import { dzd } from "../../client/src/core/money";
-import type { Product } from "../../client/src/core/types";
-import type { OwnedTemplateContract, TemplateExperience, TemplateRuntimeProps } from "../../client/src/core/templates/types";
+import { dzd, type OwnedTemplateContract, type Product, type TemplateExperience, type TemplateRuntimeProps } from "../../client/src/core/registry";
 import "./runtime.css";
 
 const spec = {"id":"makers-mark","family":"ritual","navigation":"maker","card":"maker","home":"maker","catalog":"editorial","product":"story","cart":"kit","checkout":"studio","links":[["Workshop","/catalog"],["Process","/catalog?process=1"],["Materials","/search"],["Kit","/cart"]],"lead":"Series","action":"Add to kit","suffix":"maker"} as { id: string; family: string; navigation: string; card: string; home: string; catalog: string; product: string; cart: string; checkout: string; links: readonly (readonly [string, string])[]; lead: string; action: string; suffix: string };

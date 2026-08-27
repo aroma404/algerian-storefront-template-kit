@@ -1,8 +1,6 @@
 import React, { useState, type ReactNode } from "react";
 import { Link } from "wouter";
-import { dzd } from "../../client/src/core/money";
-import type { Product } from "../../client/src/core/types";
-import type { OwnedTemplateContract, TemplateExperience, TemplateRuntimeProps } from "../../client/src/core/templates/types";
+import { dzd, type OwnedTemplateContract, type Product, type TemplateExperience, type TemplateRuntimeProps } from "../../client/src/core/registry";
 import "./runtime.css";
 
 const spec = {"id":"the-essay","family":"editorial","navigation":"chapter","card":"annotation","home":"essay","catalog":"editorial","product":"chapter","cart":"ledger","checkout":"chapter","links":[["Contents","/catalog"],["Index","/catalog?index=1"],["Notes","/search"],["Bag","/cart"]],"lead":"Issue","action":"Add to issue","suffix":"chapter"} as { id: string; family: string; navigation: string; card: string; home: string; catalog: string; product: string; cart: string; checkout: string; links: readonly (readonly [string, string])[]; lead: string; action: string; suffix: string };

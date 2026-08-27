@@ -1,17 +1,13 @@
-# Single-folder integration
+# Internal integration contract
 
-This one directory is a standalone React/Express/MySQL storefront. Select a template by editing `client/src/store/template.ts`; edit identity, catalog, operations and business metadata in the sibling `store/` modules. Those source files are intentionally plain TypeScript, so a developer can adapt them directly.
-
-Set `DATABASE_URL` from `.env.example`, run `pnpm db:migrate`, then use `pnpm dev`. The client and internal commerce routes are delivered from one Express process and one origin. With no database URL the storefront operates in explicitly reported in-memory development mode; it never falsely reports that those orders survived a restart.
-
-## API contract
+The browser uses the core registry's `commerce.api` client to call routes from the same Express server. The server owns prices, inventory, order references and persistence in `data/store-state.json`. A JSON write queue serializes checkout operations; the store writes a temporary file and atomically replaces the state file only after the complete updated state is valid.
 
 | Route | Function |
 |---|---|
-| `GET /api/health` | Liveness plus `mysql` or `memory` persistence mode |
-| `GET /api/catalog` | Live catalogue backed by MySQL when configured |
-| `GET /api/catalog/:slug` | One live product |
-| `POST /api/orders` | Validated checkout; server calculates all prices and reserves stock atomically |
+| `GET /api/health` | Liveness plus `internal` persistence mode |
+| `GET /api/catalog` | Internal live catalogue |
+| `GET /api/catalog/:slug` | One internal product |
+| `POST /api/orders` | Validated checkout with internal inventory reservation |
 | `GET /api/orders/:reference?phone=` | Order tracking protected by reference and customer phone |
 
-The checkout API accepts product IDs, quantity, selected option, delivery ID and payment method. It deliberately ignores browser-supplied prices and totals. Wire a payment gateway by creating a payment adapter before changing an order from `confirmed` to `paid`; do not expose gateway secrets to the browser.
+The checkout API accepts product IDs, quantity, selected option, delivery ID and payment method. It deliberately ignores browser-supplied prices and totals. If later adding an external payment provider, preserve the internal order store as the source of truth and validate signed provider webhooks on the server before changing payment status.
