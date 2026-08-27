@@ -1,0 +1,22 @@
+# Template Kit TODO
+
+- [x] Audit the recovered standalone storefront kernel, database adapter, and template runtime boundaries.
+- [x] Define an executable template-kit configuration and documented integration contract without the deleted Builder.
+- [x] Implement persistent catalog, inventory, cart, order, and checkout flows with validated server APIs.
+- [x] Add database migration instructions and a development-safe local mode for integrations.
+- [x] Connect template runtimes to real catalog and checkout state while preserving independent template ownership.
+- [x] Reduce client payloads and improve responsive/accessibility performance across the storefront shell.
+- [x] Add unit, API, and browser-level verification for catalog, cart, checkout, database fallback, and template selection.
+- [x] Run type-check, tests, and production build; package a standalone template kit ZIP.
+- [ ] Save a checkpoint and deliver the rebuilt template kit.
+- [x] Flatten the template kit into one distributable storefront folder without Builder or platform files.
+- [x] Make React client development and production run behind one Express server and one configured port.
+- [x] Remove obsolete split-runner files and platform-oriented metadata while retaining internal commerce routes.
+- [x] Verify the single-folder package installs, builds, starts, serves the storefront, and answers its internal routes.
+- [x] Separate shared storefront logic into an explicit core layer and reusable UI layer without changing one-server operation.
+- [x] Write one detailed Arabic architecture guide explaining structure, customization, database, server, template runtime, and release workflow.
+- [x] Package a standalone reusable skill with an intake workflow for building a real store from the template kit.
+- [ ] Rebuild and verify the single-folder template archive after the structural separation.
+- [ ] Create and push a private GitHub repository containing the standalone skill and compressed template archive.
+- [ ] Create and push a separate private GitHub repository containing the uncompressed template source folder.
+- [ ] Deliver the reusable skill attachment and an invocation prompt after the repositories are verified.

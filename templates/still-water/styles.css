@@ -1,0 +1,2 @@
+.template-surface { display: grid; gap: 1rem; }
+.template-surface[data-hero="mosaic"] { grid-template-columns: 1.2fr .8fr; }

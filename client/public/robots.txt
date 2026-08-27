@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: __STORE_URL__/sitemap.xml
