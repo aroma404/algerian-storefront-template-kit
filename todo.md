@@ -16,7 +16,7 @@
 - [x] Separate shared storefront logic into an explicit core layer and reusable UI layer without changing one-server operation.
 - [x] Write one detailed Arabic architecture guide explaining structure, customization, database, server, template runtime, and release workflow.
 - [x] Package a standalone reusable skill with an intake workflow for building a real store from the template kit.
-- [ ] Rebuild and verify the single-folder template archive after the structural separation.
-- [ ] Create and push a private GitHub repository containing the standalone skill and compressed template archive.
-- [ ] Create and push a separate private GitHub repository containing the uncompressed template source folder.
+- [x] Rebuild and verify the single-folder template archive after the structural separation.
+- [x] Create and push a private GitHub repository containing the standalone skill and compressed template archive.
+- [x] Create and push a separate private GitHub repository containing the uncompressed template source folder.
 - [ ] Deliver the reusable skill attachment and an invocation prompt after the repositories are verified.
